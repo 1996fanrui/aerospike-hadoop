@@ -67,7 +67,6 @@ import com.aerospike.hadoop.mapreduce.AerospikeLogger;
 public class SparkAerospikeTest {
 
     public static final String appName = "spark_aerospike_test";
-    public static final String master = "spark://as0:7077";
 
     public static class ExtractUsers
         implements PairFunction<String, String, Session> {
@@ -133,9 +132,9 @@ public class SparkAerospikeTest {
             .setAppName(appName)
             .set("spark.executor.memory", "2g");
         JavaSparkContext sc = new JavaSparkContext(conf);
-        sc.addJar("build/libs/spark_aerospike_test.jar");
+//        sc.addJar("build/libs/spark_aerospike_test-notfull.jar");
 
-        JavaRDD<String> entries = sc.textFile("hdfs://nameservice:8020//tmp/aerospike/users.log");
+        JavaRDD<String> entries = sc.textFile("hdfs://nameservice:8020/tmp/aerospike/users.log");
 
         JavaPairRDD<String, Session> users = entries.mapToPair( new ExtractUsers() );
 
@@ -146,7 +145,7 @@ public class SparkAerospikeTest {
         job.setOutputValueClass(Session.class);
         job.setOutputFormat(SessionOutputFormat.class);
 
-        AerospikeConfigUtil.setOutputHost(job, "localhost");
+        AerospikeConfigUtil.setOutputHost(job, "192.168.30.216");
         AerospikeConfigUtil.setOutputPort(job, 3000);
         AerospikeConfigUtil.setOutputNamespace(job, "test");
         AerospikeConfigUtil.setOutputSetName(job, "users3");

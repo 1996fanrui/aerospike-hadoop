@@ -1,14 +1,14 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-mainClassName = 'com.aerospike.spark.examples.SparkSessionRollup'
+mainClassName = 'com.aerospike.spark.examples.SparkAerospikeTest'
 
 repositories {
   mavenCentral()
 }
 
 dependencies {
-   compile "org.apache.spark:spark-core_2.10:1.1.0"
+   compile "org.apache.spark:spark-core_2.11:1.6.0"
 }
 
 jar {

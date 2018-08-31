@@ -230,8 +230,7 @@ public class SparkSessionRollup {
         
         SparkConf conf = new SparkConf()
             .setAppName(appName)
-            .set("spark.executor.memory", "2g")
-            .setMaster(master);
+            .set("spark.executor.memory", "2g");
         JavaSparkContext sc = new JavaSparkContext(conf);
         sc.addJar("build/libs/spark_session_rollup.jar");
 
