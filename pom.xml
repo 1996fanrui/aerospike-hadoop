@@ -10,7 +10,7 @@
 
   <modules>
     <module>mapreduce</module>
-    <module>sampledata</module>
+    <!--<module>sampledata</module>-->
     <module>examples</module>
   </modules>
 

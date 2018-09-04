@@ -1,39 +1,7 @@
-/* 
- * Copyright 2014 Aerospike, Inc.
- *
- * Portions may be licensed to Aerospike, Inc. under one or more
- * contributor license agreements.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you
- * may not use this file except in compliance with the License. You
- * may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
- * implied. See the License for the specific language governing
- * permissions and limitations under the License.
- */
-
 package com.aerospike.spark.examples;
 
 import java.io.IOException;
 
-import java.nio.ByteBuffer;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.codec.binary.Hex;
 
@@ -111,7 +79,7 @@ public class SparkAerospikeTest {
                                        WritePolicy writePolicy,
                                        String namespace,
                                        String setName) throws IOException {
-                Key kk = new Key(namespace, setName, sessid.toString());
+                Key kk = new Key(namespace, setName, sessid);
                 Bin bin0 = new Bin("userid", session.userAge);
                 Bin bin1 = new Bin("start", session.userName);
                 client.put(writePolicy, kk, bin0, bin1);
