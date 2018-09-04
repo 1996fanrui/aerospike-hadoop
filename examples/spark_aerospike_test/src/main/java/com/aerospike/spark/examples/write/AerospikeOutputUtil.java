@@ -1,6 +1,7 @@
 package com.aerospike.spark.examples.write;
 
 import com.aerospike.hadoop.mapreduce.AerospikeConfigUtil;
+import com.aerospike.spark.examples.async.AsyncSessionOutputFormat;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.rdd.PairRDDFunctions;
@@ -8,11 +9,12 @@ import org.apache.spark.rdd.PairRDDFunctions;
 public class AerospikeOutputUtil {
     private static Class outputKeyClass = String.class;
     private static Class outputValueClass = Session.class;
-    private static Class outputFormatClass = SessionOutputFormat.class;
+//    private static Class outputFormatClass = SessionOutputFormat.class;
+    private static Class outputFormatClass = AsyncSessionOutputFormat.class;
     private static String hosts = "192.168.30.216";
     private static int port = 3000;
     private static String namespace = "test";
-    private static String setName = "users3";
+    private static String setName = "users2";
 
     private static JobConf getJob() {
         JobConf job = new JobConf();

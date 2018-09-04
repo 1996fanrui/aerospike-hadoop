@@ -12,6 +12,7 @@ object SparkWriteScala {
       .set("spark.executor.memory", "2g")
 
     val sc = new SparkContext(conf)
+    sc.setLogLevel("WARN")
     val rdd = sc.textFile("hdfs://nameservice:8020/tmp/aerospike/users.log")
     val rdd2 = rdd.map( line=>{
       val split = line.split(' ')

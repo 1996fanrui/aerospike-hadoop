@@ -45,10 +45,13 @@ public abstract class AerospikeRecordWriter<KK, VV>
     protected final Configuration cfg;
     protected boolean initialized = false;
 
-    private static String namespace;
-    private static String setName;
-    private static AerospikeClient client;
-    private static WritePolicy writePolicy;
+    protected String host;
+    protected int port;
+    protected static String namespace;
+    protected static String setName;
+    protected static AerospikeClient client;
+    protected static WritePolicy writePolicy;
+    protected static ClientPolicy policy;
 
     private Progressable progressable;
 
@@ -76,8 +79,8 @@ public abstract class AerospikeRecordWriter<KK, VV>
 
     protected void init() throws IOException {
 
-        String host = AerospikeConfigUtil.getOutputHost(cfg);
-        int port = AerospikeConfigUtil.getOutputPort(cfg);
+        host = AerospikeConfigUtil.getOutputHost(cfg);
+        port = AerospikeConfigUtil.getOutputPort(cfg);
 
         namespace = AerospikeConfigUtil.getOutputNamespace(cfg);
         setName = AerospikeConfigUtil.getOutputSetName(cfg);
@@ -85,12 +88,12 @@ public abstract class AerospikeRecordWriter<KK, VV>
         log.info(String.format("init: %s %d %s %s",
                                host, port, namespace, setName));
 
-        ClientPolicy policy = new ClientPolicy();
+        policy = new ClientPolicy();
         policy.user = "";
         policy.password = "";
         policy.failIfNotConnected = true;
 
-        client = AerospikeClientSingleton.getInstance(policy, host, port);
+        client = new AerospikeClient(policy,host, port);
 
         writePolicy = new WritePolicy();
     }
