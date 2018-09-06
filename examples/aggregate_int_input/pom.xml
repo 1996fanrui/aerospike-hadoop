@@ -24,12 +24,12 @@
       <!--<version>2.2.0</version>-->
       <!--<scope>compile</scope>-->
     <!--</dependency>-->
-    <dependency>
-      <groupId>com.aerospike</groupId>
-      <artifactId>aerospike-client</artifactId>
-      <version>3.3.0</version>
-      <scope>compile</scope>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>com.aerospike</groupId>-->
+      <!--<artifactId>aerospike-client</artifactId>-->
+      <!--<version>4.0.6</version>-->
+      <!--<scope>compile</scope>-->
+    <!--</dependency>-->
     <dependency>
       <groupId>com.aerospike</groupId>
       <artifactId>aerospike-mapreduce</artifactId>

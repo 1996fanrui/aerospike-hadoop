@@ -3,9 +3,15 @@ package com.aerospike.spark.examples.write;
 import com.aerospike.client.AerospikeClient;
 import com.aerospike.client.Bin;
 import com.aerospike.client.Key;
+import com.aerospike.client.async.EventPolicy;
+import com.aerospike.client.async.NettyEventLoops;
+import com.aerospike.client.policy.CommitLevel;
+import com.aerospike.client.policy.RecordExistsAction;
 import com.aerospike.client.policy.WritePolicy;
+import com.aerospike.hadoop.mapreduce.AerospikeClientSingleton;
 import com.aerospike.hadoop.mapreduce.AerospikeOutputFormat;
 import com.aerospike.hadoop.mapreduce.AerospikeRecordWriter;
+import io.netty.channel.nio.NioEventLoopGroup;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapred.RecordWriter;
 import org.apache.hadoop.util.Progressable;
@@ -23,6 +29,17 @@ public class SessionOutputFormat
         public SessionRecordWriter(Configuration cfg,
                                    Progressable progressable) {
             super(cfg, progressable);
+        }
+
+        @Override
+        protected void init() throws IOException {
+            super.init();
+            super.writePolicy = super.policy.writePolicyDefault;
+            super.writePolicy.recordExistsAction = RecordExistsAction.REPLACE;
+            super.writePolicy.commitLevel = CommitLevel.COMMIT_MASTER;
+            super.writePolicy.maxRetries = 10;
+//            super.writePolicy.sendKey = true;
+            super.client = AerospikeClientSingleton.getInstance(policy, super.host, super.port);
         }
 
         @Override

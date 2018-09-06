@@ -9,11 +9,13 @@ import org.apache.spark.rdd.PairRDDFunctions;
 public class AerospikeOutputUtil {
     private static Class outputKeyClass = String.class;
     private static Class outputValueClass = Session.class;
-//    private static Class outputFormatClass = SessionOutputFormat.class;
-    private static Class outputFormatClass = AsyncSessionOutputFormat.class;
-    private static String hosts = "192.168.30.216";
+    private static Class outputFormatClass = SessionOutputFormat.class;
+//    private static Class outputFormatClass = AsyncSessionOutputFormat.class;
+//    private static String hosts = "192.168.30.216";
+//    private static String hosts = "node1.aerospike.bigdata.wl.com,node2.aerospike.bigdata.wl.com,node3.aerospike.bigdata.wl.com,node4.aerospike.bigdata.wl.com";
+    private static String hosts = "node1.aerospike.bigdata.wl.com";
     private static int port = 3000;
-    private static String namespace = "test";
+    private static String namespace = "dmp";
     private static String setName = "users2";
 
     private static JobConf getJob() {

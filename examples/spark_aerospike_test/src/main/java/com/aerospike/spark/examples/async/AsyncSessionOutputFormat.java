@@ -8,6 +8,7 @@ import com.aerospike.client.async.EventPolicy;
 import com.aerospike.client.async.NettyEventLoops;
 import com.aerospike.client.policy.ClientPolicy;
 import com.aerospike.client.policy.CommitLevel;
+import com.aerospike.client.policy.RecordExistsAction;
 import com.aerospike.client.policy.WritePolicy;
 import com.aerospike.hadoop.mapreduce.AerospikeClientSingleton;
 import com.aerospike.hadoop.mapreduce.AerospikeOutputFormat;
@@ -22,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.RandomAccessFile;
 
 public class AsyncSessionOutputFormat
         extends AerospikeOutputFormat<String, Session> {
@@ -30,9 +32,9 @@ public class AsyncSessionOutputFormat
             extends AerospikeRecordWriter<String, Session> {
 
         // Allocate an event loop for each cpu core
-        private final int eventLoopSize = 8;
+        private final int eventLoopSize = Runtime.getRuntime().availableProcessors();
         // important config to use async client api in storm, Allow concurrent commands per event loop.
-        private final int concurrentMax = eventLoopSize * 300;
+        private final int concurrentMax = eventLoopSize * 20;
         private transient EventLoopGroup eventLoopGroup;
         private transient EventPolicy eventPolicy;
         private transient EventLoops eventLoops;
@@ -48,9 +50,12 @@ public class AsyncSessionOutputFormat
             eventLoopGroup = new NioEventLoopGroup(eventLoopSize);
             eventPolicy = new EventPolicy();
             eventLoops = new NettyEventLoops(eventPolicy, eventLoopGroup);
-            super.policy.maxConnsPerNode = concurrentMax;
+            super.policy.maxConnsPerNode = eventLoopSize;
             super.policy.eventLoops = eventLoops;
             super.writePolicy = policy.writePolicyDefault;
+            super.writePolicy.recordExistsAction = RecordExistsAction.REPLACE;
+            super.writePolicy.commitLevel = CommitLevel.COMMIT_MASTER;
+//            super.writePolicy.sendKey = true;
             super.client = AerospikeClientSingleton.getInstance(policy, super.host, super.port);
         }
 
